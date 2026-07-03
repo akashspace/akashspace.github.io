@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash | Research</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 40px 20px; background-color: #f9f9f9; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 50px; }
+        .logo { font-size: 1.4rem; font-weight: 700; text-decoration: none; color: #111; }
+        nav { display: flex; gap: 20px; }
+        nav a { text-decoration: none; color: #555; font-weight: 500; }
+        nav a:hover, nav a.active { color: #0066cc; }
+
+        .intro { margin-bottom: 50px; text-align: center; }
+        
+        /* The Grid Layout */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        /* The Glassmorphism Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #0066cc;
+        }
+        .card h2 { margin-top: 0; color: #0066cc; }
+        .card p { font-size: 0.95rem; color: #666; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Akash</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="research.html" class="active">Research</a>
+            <a href="publications.html">Publications</a>
+            <a href="talks.html">Talks</a>
+            <a href="cv.html">CV</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="intro">
+            <h1>Research Areas</h1>
+            <p>My research focuses on the intersection of numerical analysis, stochastic analysis and their applications in data science.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Sampling Card -->
+            <a href="research-sampling.html" class="card">
+                <h2>Sampling</h2>
+                <p>Developing methods for Bayesian inference and sampling on manifolds, in bounded domains utilizing Langevin diffusion and non-reversible Markov jump processes.</p>
+            </a>
+
+            <!-- Optimization Card -->
+            <a href="research-optimization.html" class="card">
+                <h2>Optimization</h2>
+                <p>Investigating consensus-based optimization, controlled stochastic processes, and simulated annealing to solve high-dimensional non-convex problems.</p>
+            </a>
+
+            <!-- Stochastic Numerics Card -->
+            <a href="research-numerics.html" class="card">
+                <h2>Stochastic Numerics</h2>
+                <p>Numerical integration of SDEs with applications to solving boundary value problems.</p>
+            </a>
+        </div>
+    </main>
+
+</body>
+</html>
