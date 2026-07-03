@@ -1,193 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae | Akash Sharma</title>
+    
+    <style>
+        /* --- General Body Styling --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6; /* Example background */
+            margin: 0;
+            padding: 20px;
+        }
 
-/* --- Timeline Section Styling --- */
-.timeline {
-    position: relative;
-    max-width: 800px;
-    margin: 60px auto;
-    padding: 20px 0;
-}
+        /* --- Timeline Section Styling --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 20px 0;
+        }
 
-/* The vertical center line */
-.timeline::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    background-color: #0066cc; /* Matches your accent blue */
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -1px;
-}
+        /* The vertical center line */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: #0066cc;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
 
-/* Container around the content blocks */
-.timeline-container {
-    padding: 10px 40px;
-    position: relative;
-    background-color: inherit;
-    width: 50%;
-    box-sizing: border-box;
-}
+        /* Container around the content blocks */
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
 
-/* The intersection circles on the vertical line */
-.timeline-container::after {
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    right: -7px;
-    background-color: #fff;
-    border: 3px solid #0066cc;
-    top: 26px;
-    border-radius: 50%;
-    z-index: 1;
-}
+        /* The intersection circles on the vertical line */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            right: -7px;
+            background-color: #fff;
+            border: 3px solid #0066cc;
+            top: 26px;
+            border-radius: 50%;
+            z-index: 1;
+        }
 
-/* Align left-side elements */
-.left {
-    left: 0;
-    text-align: right;
-}
+        /* Align left-side elements */
+        .left {
+            left: 0;
+            text-align: right;
+        }
 
-/* Align right-side elements */
-.right {
-    left: 50%;
-    text-align: left;
-}
+        /* Align right-side elements */
+        .right {
+            left: 50%;
+            text-align: left;
+        }
 
-/* Fix circle position for right-side elements */
-.right::after {
-    left: -7px;
-}
+        /* Fix circle position for right-side elements */
+        .right::after {
+            left: -7px;
+        }
 
-/* The actual content box (Glassmorphic) */
-.timeline-content {
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    position: relative;
-    transition: all 0.3s ease;
-}
+        /* The actual content box (Glassmorphic) */
+        .timeline-content {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
-.timeline-content:hover {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-}
+        .timeline-content:hover {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
 
-/* The connecting horizontal lines */
-.left .timeline-content::after {
-    content: '';
-    position: absolute;
-    top: 32px;
-    right: -40px;
-    width: 40px;
-    height: 2px;
-    background-color: #0066cc;
-}
+        /* The connecting horizontal lines */
+        .left .timeline-content::after {
+            content: '';
+            position: absolute;
+            top: 32px;
+            right: -40px;
+            width: 40px;
+            height: 2px;
+            background-color: #0066cc;
+        }
 
-.right .timeline-content::after {
-    content: '';
-    position: absolute;
-    top: 32px;
-    left: -40px;
-    width: 40px;
-    height: 2px;
-    background-color: #0066cc;
-}
+        .right .timeline-content::after {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: -40px;
+            width: 40px;
+            height: 2px;
+            background-color: #0066cc;
+        }
 
-/* Inner Text Styles */
-.timeline-year {
-    font-weight: 700;
-    color: #0066cc;
-    font-size: 1.1em;
-    margin-bottom: 5px;
-}
+        /* Inner Text Styles */
+        .timeline-year {
+            font-weight: 700;
+            color: #0066cc;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
 
-.timeline-position {
-    font-weight: 700;
-    font-size: 1.25em;
-    color: #222;
-    margin: 5px 0;
-}
+        .timeline-position {
+            font-weight: 700;
+            font-size: 1.25em;
+            color: #222;
+            margin: 5px 0;
+        }
 
-.timeline-place {
-    font-style: italic;
-    color: #555;
-    font-size: 1.05em;
-    margin-bottom: 12px;
-}
+        .timeline-place {
+            font-style: italic;
+            color: #555;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+        }
 
-.timeline-details {
-    font-size: 0.95em;
-    line-height: 1.5;
-    color: #444;
-}
+        .timeline-details {
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #444;
+        }
 
-/* Mobile Responsive Layout (Stacks cleanly on phones) */
-@media screen and (max-width: 768px) {
-    .timeline::after {
-        left: 31px;
-    }
-    .timeline-container {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 20px;
-        text-align: left;
-    }
-    .left, .right {
-        left: 0;
-    }
-    .timeline-container::after {
-        left: 24px;
-    }
-    .left .timeline-content::after, .right .timeline-content::after {
-        left: -40px;
-        width: 40px;
-    }
-}
+        /* Mobile Responsive Layout */
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
+                text-align: left;
+            }
+            .left, .right {
+                left: 0;
+            }
+            .timeline-container::after {
+                left: 24px;
+            }
+            .left .timeline-content::after, .right .timeline-content::after {
+                left: -40px;
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
 
+    <h2 style="text-align: center; color: #333; font-family: sans-serif;">Employment and Education</h2>
 
-<div class="timeline">
+    <div class="timeline">
 
-    <!-- 1. Post Doc (Right Side) -->
-    <div class="timeline-container right">
-        <div class="timeline-content">
-            <div class="timeline-year">2024 — Present</div>
-            <div class="timeline-position">Postdoctoral Researcher</div>
-            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
-            <div class="timeline-details">
-                <strong>Mentors:</strong> Prof. [Name], Prof. [Name]<br>
-                <strong>Focus:</strong> [Brief 1-sentence descriptor of your focus here]
+        <!-- 1. Postdoc (Right Side) -->
+        <div class="timeline-container right">
+            <div class="timeline-content">
+                <div class="timeline-year">August, 2023 — present</div>
+                <div class="timeline-position">Postdoc</div>
+                <div class="timeline-place">Chalmers University of Technology and University of Gothenburg, Sweden</div>
+                <div class="timeline-details">
+                    <strong>Mentor:</strong> Dr Axel Ringh
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 2. PhD (Left Side) -->
-    <div class="timeline-container left">
-        <div class="timeline-content">
-            <div class="timeline-year">2020 — 2024</div>
-            <div class="timeline-position">Ph.D. in Mathematics / Statistics</div>
-            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
-            <div class="timeline-details">
-                <strong>Supervisor:</strong> Prof. [Name]<br>
-                <strong>Thesis:</strong> "[Title of your doctoral thesis or core research topic]"
+        <!-- 2. Research Fellow (Left Side) -->
+        <div class="timeline-container left">
+            <div class="timeline-content">
+                <div class="timeline-year">May, 2022 — August, 2023</div>
+                <div class="timeline-position">Research fellow</div>
+                <div class="timeline-place">University of Nottingham, UK</div>
+                <div class="timeline-details">
+                    <strong>Mentors:</strong> Prof. K. Bharath and Prof. M. Tretyakov
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 3. Integrated Masters (Right Side) -->
-    <div class="timeline-container right">
-        <div class="timeline-content">
-            <div class="timeline-year">2015 — 2020</div>
-            <div class="timeline-position">Integrated B.Sc. & M.Sc. (Masters)</div>
-            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
-            <div class="timeline-details">
-                <strong>Advisor:</strong> Prof. [Name]<br>
-                <strong>Specialization:</strong> [Major field of study/Computational Mathematics]
+        <!-- 3. Research Associate and Fellow (Right Side) -->
+        <div class="timeline-container right">
+            <div class="timeline-content">
+                <div class="timeline-year">February, 2022 — May, 2022</div>
+                <div class="timeline-position">Research Associate and Research fellow</div>
+                <div class="timeline-place">University of Nottingham, UK</div>
+                <div class="timeline-details">
+                    <strong>Mentor:</strong> Prof. M. Tretyakov
+                </div>
             </div>
         </div>
+
+        <!-- 4. PhD (Left Side) -->
+        <div class="timeline-container left">
+            <div class="timeline-content">
+                <div class="timeline-year">October, 2018 — February, 2022</div>
+                <div class="timeline-position">Ph.D. Mathematics</div>
+                <div class="timeline-place">University of Nottingham, UK</div>
+            </div>
+        </div>
+
+        <!-- 5. Integrated Masters (Right Side) -->
+        <div class="timeline-container right">
+            <div class="timeline-content">
+                <div class="timeline-year">July, 2013 — April, 2018</div>
+                <div class="timeline-position">Integrated Master of Science, Applied Mathematics</div>
+                <div class="timeline-place">Indian Institute of Technology Roorkee</div>
+                <div class="timeline-details">
+                    <strong>GPA:</strong> 8.104/10
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
+</body>
+</html>
