@@ -1,1 +1,120 @@
-<h1>Hello World! This is my new site.</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash | Home</title>
+    <style>
+        /* Modern, clean font stack and layout styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: #222;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #ffffff;
+        }
+        
+        /* Navigation Menu at the top */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #111;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        nav a:hover, nav a.active {
+            color: #0066cc; /* Academic Blue highlight */
+        }
+
+        /* Introduction Layout */
+        .intro-container {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 40px;
+        }
+        @media (min-width: 600px) {
+            .intro-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+        .intro-text {
+            flex: 2;
+        }
+        .intro-image {
+            flex: 1;
+            max-width: 200px;
+        }
+        .intro-image img {
+            width: 100%;
+            border-radius: 50%; /* Makes your profile pic a circle */
+            border: 3px solid #eee;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Akash</a>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="research.html">Research</a>
+            <a href="publications.html">Publications</a>
+            <a href="talks.html">Talks</a>
+            <a href="cv.html">CV</a>
+        </nav>
+    </header>
+
+    <main class="intro-container">
+        <div class="intro-text">
+            <h1>Hi, I'm Akash</h1>
+            <div class="subtitle">Researcher & Developer</div>
+            <p>
+                Welcome to my personal website! This is where I share my work, ongoing research projects, and academic updates. 
+            </p>
+            <p>
+                You can customize this block of text to write a compelling introduction about yourself. Talk about what you are currently studying, your primary research interests, the problems you enjoy solving, or your current professional role.
+            </p>
+            <p>
+                Feel free to look around using the navigation links above to find my publications, upcoming talks, or my formal curriculum vitae.
+            </p>
+        </div>
+        
+        <!-- Optional Profile Picture Placeholder -->
+        <div class="intro-image">
+            <img src="https://via.placeholder.com/200" alt="Akash's Profile Picture">
+        </div>
+    </main>
+
+</body>
+</html>
