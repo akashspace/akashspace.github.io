@@ -1,1 +1,193 @@
 
+/* --- Timeline Section Styling --- */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 20px 0;
+}
+
+/* The vertical center line */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: #0066cc; /* Matches your accent blue */
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;
+}
+
+/* Container around the content blocks */
+.timeline-container {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+/* The intersection circles on the vertical line */
+.timeline-container::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    right: -7px;
+    background-color: #fff;
+    border: 3px solid #0066cc;
+    top: 26px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Align left-side elements */
+.left {
+    left: 0;
+    text-align: right;
+}
+
+/* Align right-side elements */
+.right {
+    left: 50%;
+    text-align: left;
+}
+
+/* Fix circle position for right-side elements */
+.right::after {
+    left: -7px;
+}
+
+/* The actual content box (Glassmorphic) */
+.timeline-content {
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* The connecting horizontal lines */
+.left .timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 32px;
+    right: -40px;
+    width: 40px;
+    height: 2px;
+    background-color: #0066cc;
+}
+
+.right .timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: -40px;
+    width: 40px;
+    height: 2px;
+    background-color: #0066cc;
+}
+
+/* Inner Text Styles */
+.timeline-year {
+    font-weight: 700;
+    color: #0066cc;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.timeline-position {
+    font-weight: 700;
+    font-size: 1.25em;
+    color: #222;
+    margin: 5px 0;
+}
+
+.timeline-place {
+    font-style: italic;
+    color: #555;
+    font-size: 1.05em;
+    margin-bottom: 12px;
+}
+
+.timeline-details {
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: #444;
+}
+
+/* Mobile Responsive Layout (Stacks cleanly on phones) */
+@media screen and (max-width: 768px) {
+    .timeline::after {
+        left: 31px;
+    }
+    .timeline-container {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 20px;
+        text-align: left;
+    }
+    .left, .right {
+        left: 0;
+    }
+    .timeline-container::after {
+        left: 24px;
+    }
+    .left .timeline-content::after, .right .timeline-content::after {
+        left: -40px;
+        width: 40px;
+    }
+}
+
+
+<div class="timeline">
+
+    <!-- 1. Post Doc (Right Side) -->
+    <div class="timeline-container right">
+        <div class="timeline-content">
+            <div class="timeline-year">2024 — Present</div>
+            <div class="timeline-position">Postdoctoral Researcher</div>
+            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
+            <div class="timeline-details">
+                <strong>Mentors:</strong> Prof. [Name], Prof. [Name]<br>
+                <strong>Focus:</strong> [Brief 1-sentence descriptor of your focus here]
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PhD (Left Side) -->
+    <div class="timeline-container left">
+        <div class="timeline-content">
+            <div class="timeline-year">2020 — 2024</div>
+            <div class="timeline-position">Ph.D. in Mathematics / Statistics</div>
+            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
+            <div class="timeline-details">
+                <strong>Supervisor:</strong> Prof. [Name]<br>
+                <strong>Thesis:</strong> "[Title of your doctoral thesis or core research topic]"
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Integrated Masters (Right Side) -->
+    <div class="timeline-container right">
+        <div class="timeline-content">
+            <div class="timeline-year">2015 — 2020</div>
+            <div class="timeline-position">Integrated B.Sc. & M.Sc. (Masters)</div>
+            <div class="timeline-place">[University/Institution Name], [City/Country]</div>
+            <div class="timeline-details">
+                <strong>Advisor:</strong> Prof. [Name]<br>
+                <strong>Specialization:</strong> [Major field of study/Computational Mathematics]
+            </div>
+        </div>
+    </div>
+
+</div>
