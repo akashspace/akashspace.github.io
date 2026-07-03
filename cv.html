@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
-            padding: 0; /* Reset padding to 0 so header touches edges */
+            padding: 0;
         }
 
         /* --- Header & Navigation Styling --- */
@@ -21,7 +21,7 @@
             align-items: center;
             padding: 20px 5%;
             background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Soft shadow under nav */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 40px;
         }
 
@@ -42,10 +42,10 @@
         }
 
         nav a:hover, nav a.active {
-            color: olive; /* Active and hover state matches CV theme */
+            color: olive;
         }
 
-        /* --- Timeline Section Styling --- */
+        /* --- Timeline Section Styling (Employment & Education) --- */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -53,19 +53,17 @@
             padding: 20px 0;
         }
 
-        /* The vertical center line */
         .timeline::after {
             content: '';
             position: absolute;
             width: 2px;
-            background-color: olive; /* Set to olive */
+            background-color: olive;
             top: 0;
             bottom: 0;
             left: 50%;
             margin-left: -1px;
         }
 
-        /* Container around the content blocks */
         .timeline-container {
             padding: 10px 40px;
             position: relative;
@@ -74,7 +72,6 @@
             box-sizing: border-box;
         }
 
-        /* The intersection circles on the vertical line */
         .timeline-container::after {
             content: '';
             position: absolute;
@@ -82,30 +79,26 @@
             height: 14px;
             right: -7px;
             background-color: #fff;
-            border: 3px solid olive; /* Set to olive */
+            border: 3px solid olive;
             top: 26px;
             border-radius: 50%;
             z-index: 1;
         }
 
-        /* Align left-side elements */
         .left {
             left: 0;
             text-align: right;
         }
 
-        /* Align right-side elements */
         .right {
             left: 50%;
             text-align: left;
         }
 
-        /* Fix circle position for right-side elements */
         .right::after {
             left: -7px;
         }
 
-        /* The actual content box (Glassmorphic) */
         .timeline-content {
             padding: 25px;
             background: rgba(255, 255, 255, 0.6);
@@ -122,7 +115,6 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
-        /* The connecting horizontal lines */
         .left .timeline-content::after {
             content: '';
             position: absolute;
@@ -130,7 +122,7 @@
             right: -40px;
             width: 40px;
             height: 2px;
-            background-color: olive; /* Set to olive */
+            background-color: olive;
         }
 
         .right .timeline-content::after {
@@ -140,10 +132,9 @@
             left: -40px;
             width: 40px;
             height: 2px;
-            background-color: olive; /* Set to olive */
+            background-color: olive;
         }
 
-        /* Inner Text Styles */
         .timeline-year {
             font-weight: 700;
             color: #333;
@@ -151,7 +142,6 @@
             margin-bottom: 5px;
         }
 
-        /* Position titles */
         .timeline-position {
             font-weight: 700;
             font-size: 1.25em;
@@ -170,6 +160,59 @@
             font-size: 0.95em;
             line-height: 1.5;
             color: #444;
+        }
+
+        /* --- Awards and Grants Section Styling --- */
+        .awards-section {
+            max-width: 800px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .grant-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 5px solid olive; /* Accent edge */
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .grant-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transform: translateX(5px); /* Slides slightly to the right on hover */
+        }
+
+        .grant-details {
+            flex-grow: 1;
+        }
+
+        .grant-title {
+            font-weight: 700;
+            font-size: 1.15em;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .grant-org {
+            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .grant-year {
+            font-weight: 700;
+            color: olive;
+            font-size: 1.1em;
+            margin-left: 20px;
+            white-space: nowrap;
         }
 
         /* Mobile Responsive Layout */
@@ -200,11 +243,20 @@
                 left: -40px;
                 width: 40px;
             }
+            .grant-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .grant-year {
+                margin-left: 0;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
 <body>
     
+    <!-- Header Navigation -->
     <header>
         <a href="index.html" class="logo">Akash</a>
         <nav>
@@ -217,6 +269,7 @@
         </nav>
     </header>
     
+    <!-- Employment and Education Timeline -->
     <h2 style="text-align: center; color: olive; font-family: sans-serif;">Employment and Education</h2>
 
     <div class="timeline">
@@ -261,10 +314,43 @@
                 <div class="timeline-position">Integrated Master of Science, Applied Mathematics</div>
                 <div class="timeline-place">Indian Institute of Technology Roorkee</div>
                 <div class="timeline-details">
-                    <!-- Added your GPA back in as it was empty in your snippet -->
-                    <strong>GPA:</strong> 8.104/10 
+                   <!-- <strong>GPA:</strong> 8.104/10 -->
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <!-- Awards and Grants Section -->
+    <h2 style="text-align: center; color: olive; font-family: sans-serif; margin-top: 60px;">Awards and Grants</h2>
+    
+    <div class="awards-section">
+        
+        <!-- KVVS Grant -->
+        <div class="grant-card">
+            <div class="grant-details">
+                <div class="grant-title">Research Grant (15,000 SEK)</div>
+                <div class="grant-org">Gothenburg Arts and Science Society (KVVS)</div>
+            </div>
+            <div class="grant-year">2024</div> <!-- Adjust this year if needed -->
+        </div>
+
+        <!-- Placeholder Award 1 -->
+        <div class="grant-card">
+            <div class="grant-details">
+                <div class="grant-title">[Name of Previous Award/Scholarship]</div>
+                <div class="grant-org">[Awarding Institution, e.g., University of Nottingham]</div>
+            </div>
+            <div class="grant-year">[Year]</div>
+        </div>
+
+        <!-- Placeholder Award 2 -->
+        <div class="grant-card">
+            <div class="grant-details">
+                <div class="grant-title">[Name of Previous Award/Scholarship]</div>
+                <div class="grant-org">[Awarding Institution, e.g., IIT Roorkee]</div>
+            </div>
+            <div class="grant-year">[Year]</div>
         </div>
 
     </div>
