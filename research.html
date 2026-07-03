@@ -26,13 +26,18 @@
             border-radius: 15px;
             text-decoration: none;
             color: #333;
-            transition: transform 0.3s ease, background 0.3s ease;
+            /* Added smooth transition for all properties */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
+        
         .card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.9);
+            /* The card lifts and grows slightly */
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.95);
             border-color: #0066cc;
+            /* Deeper shadow for the 'lifted' look */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         .card h2 { margin-top: 0; color: #0066cc; }
         .card p { font-size: 0.95rem; color: #666; }
