@@ -11,7 +11,38 @@
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
-            padding: 20px;
+            padding: 0; /* Reset padding to 0 so header touches edges */
+        }
+
+        /* --- Header & Navigation Styling --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Soft shadow under nav */
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin-left: 25px;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: olive; /* Active and hover state matches CV theme */
         }
 
         /* --- Timeline Section Styling --- */
@@ -27,7 +58,7 @@
             content: '';
             position: absolute;
             width: 2px;
-            background-color: #0066cc;
+            background-color: olive; /* Set to olive */
             top: 0;
             bottom: 0;
             left: 50%;
@@ -51,7 +82,7 @@
             height: 14px;
             right: -7px;
             background-color: #fff;
-            border: 3px solid #0066cc;
+            border: 3px solid olive; /* Set to olive */
             top: 26px;
             border-radius: 50%;
             z-index: 1;
@@ -99,7 +130,7 @@
             right: -40px;
             width: 40px;
             height: 2px;
-            background-color: #0066cc;
+            background-color: olive; /* Set to olive */
         }
 
         .right .timeline-content::after {
@@ -109,18 +140,18 @@
             left: -40px;
             width: 40px;
             height: 2px;
-            background-color: #0066cc;
+            background-color: olive; /* Set to olive */
         }
 
         /* Inner Text Styles */
         .timeline-year {
             font-weight: 700;
-            color: #0066cc;
+            color: #333;
             font-size: 1.1em;
             margin-bottom: 5px;
         }
 
-        /* Changed the color of the position titles to olive */
+        /* Position titles */
         .timeline-position {
             font-weight: 700;
             font-size: 1.25em;
@@ -143,6 +174,13 @@
 
         /* Mobile Responsive Layout */
         @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav a {
+                margin: 0 10px;
+            }
             .timeline::after {
                 left: 31px;
             }
@@ -166,18 +204,19 @@
     </style>
 </head>
 <body>
+    
     <header>
         <a href="index.html" class="logo">Akash</a>
         <nav>
             <a href="index.html">Home</a>
             <a href="research.html">Research</a>
-            <a href="publications.html" class="active">Publications</a>
+            <a href="publications.html">Publications</a>
             <a href="teaching.html">Teaching</a>
             <a href="talks.html">Talks</a>
-            <a href="cv.html">CV</a>
+            <a href="cv.html" class="active">CV</a>
         </nav>
     </header>
-    <!-- Changed the color of the main heading to olive -->
+    
     <h2 style="text-align: center; color: olive; font-family: sans-serif;">Employment and Education</h2>
 
     <div class="timeline">
@@ -206,8 +245,6 @@
             </div>
         </div>
 
-        
-
         <!-- 3. PhD (Right Side) -->
         <div class="timeline-container right">
             <div class="timeline-content">
@@ -217,13 +254,15 @@
             </div>
         </div>
 
-        <!-- 5. Integrated Masters (Left Side) -->
+        <!-- 4. Integrated Masters (Left Side) -->
         <div class="timeline-container left">
             <div class="timeline-content">
                 <div class="timeline-year">July, 2013 — April, 2018</div>
                 <div class="timeline-position">Integrated Master of Science, Applied Mathematics</div>
                 <div class="timeline-place">Indian Institute of Technology Roorkee</div>
                 <div class="timeline-details">
+                    <!-- Added your GPA back in as it was empty in your snippet -->
+                    <strong>GPA:</strong> 8.104/10 
                 </div>
             </div>
         </div>
