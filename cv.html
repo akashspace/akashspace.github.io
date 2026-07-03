@@ -3,53 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum Vitae | Akash Sharma</title>
+    <title>Akash | CV</title>
     
     <style>
-        /* --- General Body Styling --- */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 0;
+        /* --- Global & Header Styling (Matching Publications Page) --- */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.7; 
+            color: #222; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: #ffffff; 
+        }
+        
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 20px; 
+            margin-bottom: 40px; 
+        }
+        
+        .logo { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            text-decoration: none; 
+            color: #111; 
+        }
+        
+        nav { 
+            display: flex; 
+            gap: 20px; 
+        }
+        
+        nav a { 
+            text-decoration: none; 
+            color: #555; 
+            font-weight: 500; 
+            transition: color 0.2s ease; 
+        }
+        
+        nav a:hover, nav a.active { 
+            color: #0066cc; 
+        }
+        
+        h1 { 
+            font-size: 2.5rem; 
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            color: #111; 
+        }
+        
+        h2 { 
+            font-size: 1.5rem; 
+            color: #333; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 5px; 
+            margin-top: 40px; 
         }
 
-        /* --- Header & Navigation Styling --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            font-size: 1.8em;
-            font-weight: bold;
-            text-decoration: none;
-            color: #333;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #555;
-            margin-left: 25px;
-            font-size: 1.05em;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover, nav a.active {
-            color: olive;
-        }
-
-        /* --- Timeline Section Styling (Employment & Education) --- */
+        /* --- Timeline Section Styling (Structure kept, colors adapted to theme) --- */
         .timeline {
             position: relative;
-            max-width: 800px;
-            margin: 60px auto;
+            width: 100%;
+            margin: 40px 0;
             padding: 20px 0;
         }
 
@@ -57,7 +76,7 @@
             content: '';
             position: absolute;
             width: 2px;
-            background-color: olive;
+            background-color: #0066cc; /* Matched to publications blue */
             top: 0;
             bottom: 0;
             left: 50%;
@@ -79,7 +98,7 @@
             height: 14px;
             right: -7px;
             background-color: #fff;
-            border: 3px solid olive;
+            border: 3px solid #0066cc; /* Matched to publications blue */
             top: 26px;
             border-radius: 50%;
             z-index: 1;
@@ -99,20 +118,19 @@
             left: -7px;
         }
 
+        /* Adapted from glassmorphism to clean, flat boxes to match new theme */
         .timeline-content {
             padding: 25px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
             position: relative;
             transition: all 0.3s ease;
         }
 
         .timeline-content:hover {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            background: #f0f4f8;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.08);
         }
 
         .left .timeline-content::after {
@@ -122,7 +140,7 @@
             right: -40px;
             width: 40px;
             height: 2px;
-            background-color: olive;
+            background-color: #0066cc;
         }
 
         .right .timeline-content::after {
@@ -132,7 +150,7 @@
             left: -40px;
             width: 40px;
             height: 2px;
-            background-color: olive;
+            background-color: #0066cc;
         }
 
         .timeline-year {
@@ -145,7 +163,7 @@
         .timeline-position {
             font-weight: 700;
             font-size: 1.25em;
-            color: olive; 
+            color: #0066cc; 
             margin: 5px 0;
         }
 
@@ -164,20 +182,16 @@
 
         /* --- Awards and Grants Section Styling --- */
         .awards-section {
-            max-width: 800px;
-            margin: 40px auto 80px auto;
-            padding: 0 20px;
+            margin: 20px 0 60px 0;
         }
 
         .grant-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-left: 5px solid olive; /* Accent edge */
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-left: 5px solid #0066cc;
             padding: 20px 25px;
             margin-bottom: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -185,9 +199,9 @@
         }
 
         .grant-card:hover {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transform: translateX(5px); /* Slides slightly to the right on hover */
+            background: #f0f4f8;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.08);
         }
 
         .grant-details {
@@ -209,7 +223,7 @@
 
         .grant-year {
             font-weight: 700;
-            color: olive;
+            color: #0066cc;
             font-size: 1.1em;
             margin-left: 20px;
             white-space: nowrap;
@@ -217,12 +231,8 @@
 
         /* Mobile Responsive Layout */
         @media screen and (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            nav a {
-                margin: 0 10px;
+            nav {
+                flex-wrap: wrap; /* Allows nav to wrap nicely on very small screens */
             }
             .timeline::after {
                 left: 31px;
@@ -255,8 +265,8 @@
     </style>
 </head>
 <body>
-    
-    <!-- Header Navigation -->
+
+    <!-- Header Navigation exactly matching publications.html -->
     <header>
         <a href="index.html" class="logo">Akash</a>
         <nav>
@@ -268,92 +278,97 @@
             <a href="cv.html" class="active">CV</a>
         </nav>
     </header>
-    
-    <!-- Employment and Education Timeline -->
-    <h2 style="text-align: center; color: olive; font-family: sans-serif;">Employment and Education</h2>
 
-    <div class="timeline">
+    <main>
+        <!-- Added a top-level H1 to match the Publications & Preprints H1 -->
+        <h1>Curriculum Vitae</h1>
 
-        <!-- 1. Postdoc (Right Side) -->
-        <div class="timeline-container right">
-            <div class="timeline-content">
-                <div class="timeline-year">August, 2023 — present</div>
-                <div class="timeline-position">Postdoc</div>
-                <div class="timeline-place">Chalmers University of Technology and University of Gothenburg, Sweden</div>
-                <div class="timeline-details">
-                    <strong>Mentor:</strong> Dr Axel Ringh
+        <!-- Using the global CSS for H2 instead of inline styles -->
+        <h2>Employment and Education</h2>
+
+        <div class="timeline">
+
+            <!-- 1. Postdoc (Right Side) -->
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <div class="timeline-year">August, 2023 — present</div>
+                    <div class="timeline-position">Postdoc</div>
+                    <div class="timeline-place">Chalmers University of Technology and University of Gothenburg, Sweden</div>
+                    <div class="timeline-details">
+                        <strong>Mentor:</strong> Dr Axel Ringh
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 2. Research Fellow (Left Side) -->
-        <div class="timeline-container left">
-            <div class="timeline-content">
-                <div class="timeline-year">February, 2022 — August, 2023</div>
-                <div class="timeline-position">Research fellow</div>
-                <div class="timeline-place">University of Nottingham, UK</div>
-                <div class="timeline-details">
-                    <strong>Mentors:</strong> Prof. K. Bharath and Prof. M. Tretyakov
+            <!-- 2. Research Fellow (Left Side) -->
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <div class="timeline-year">February, 2022 — August, 2023</div>
+                    <div class="timeline-position">Research fellow</div>
+                    <div class="timeline-place">University of Nottingham, UK</div>
+                    <div class="timeline-details">
+                        <strong>Mentors:</strong> Prof. K. Bharath and Prof. M. Tretyakov
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 3. PhD (Right Side) -->
-        <div class="timeline-container right">
-            <div class="timeline-content">
-                <div class="timeline-year">October, 2018 — February, 2022</div>
-                <div class="timeline-position">Ph.D. Mathematics</div>
-                <div class="timeline-place">University of Nottingham, UK</div>
-            </div>
-        </div>
-
-        <!-- 4. Integrated Masters (Left Side) -->
-        <div class="timeline-container left">
-            <div class="timeline-content">
-                <div class="timeline-year">July, 2013 — April, 2018</div>
-                <div class="timeline-position">Integrated Master of Science, Applied Mathematics</div>
-                <div class="timeline-place">Indian Institute of Technology Roorkee</div>
-                <div class="timeline-details">
-                   <!-- <strong>GPA:</strong> 8.104/10 -->
+            <!-- 3. PhD (Right Side) -->
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <div class="timeline-year">October, 2018 — February, 2022</div>
+                    <div class="timeline-position">Ph.D. Mathematics</div>
+                    <div class="timeline-place">University of Nottingham, UK</div>
                 </div>
             </div>
+
+            <!-- 4. Integrated Masters (Left Side) -->
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <div class="timeline-year">July, 2013 — April, 2018</div>
+                    <div class="timeline-position">Integrated Master of Science, Applied Mathematics</div>
+                    <div class="timeline-place">Indian Institute of Technology Roorkee</div>
+                    <div class="timeline-details">
+                        <strong>GPA:</strong> 8.104/10
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-    </div>
-
-    <!-- Awards and Grants Section -->
-    <h2 style="text-align: center; color: olive; font-family: sans-serif; margin-top: 60px;">Awards and Grants</h2>
-    
-    <div class="awards-section">
+        <!-- Awards and Grants Section -->
+        <h2>Awards and Grants</h2>
         
-        <!-- KVVS Grant -->
-        <div class="grant-card">
-            <div class="grant-details">
-                <div class="grant-title">Research Grant (15,000 SEK)</div>
-                <div class="grant-org">Gothenburg Arts and Science Society (KVVS)</div>
+        <div class="awards-section">
+            
+            <!-- KVVS Grant -->
+            <div class="grant-card">
+                <div class="grant-details">
+                    <div class="grant-title">Research Grant (15,000 SEK)</div>
+                    <div class="grant-org">Gothenburg Arts and Science Society (KVVS)</div>
+                </div>
+                <div class="grant-year">2024</div>
             </div>
-            <div class="grant-year">2024</div> <!-- Adjust this year if needed -->
-        </div>
 
-        <!-- Placeholder Award 1 -->
-        <div class="grant-card">
-            <div class="grant-details">
-                <div class="grant-title">[Name of Previous Award/Scholarship]</div>
-                <div class="grant-org">[Awarding Institution]</div>
+            <!-- Placeholder Award 1 -->
+            <div class="grant-card">
+                <div class="grant-details">
+                    <div class="grant-title">[Name of Previous Award/Scholarship]</div>
+                    <div class="grant-org">[Awarding Institution, e.g., University of Nottingham]</div>
+                </div>
+                <div class="grant-year">[Year]</div>
             </div>
-            <div class="grant-year">[Year]</div>
-        </div>
 
-        <!-- Placeholder Award 2 -->
-        <div class="grant-card">
-            <div class="grant-details">
-                <div class="grant-title">[Name of Previous Award/Scholarship]</div>
-                <div class="grant-org">[Awarding Institution]</div>
+            <!-- Placeholder Award 2 -->
+            <div class="grant-card">
+                <div class="grant-details">
+                    <div class="grant-title">[Name of Previous Award/Scholarship]</div>
+                    <div class="grant-org">[Awarding Institution, e.g., IIT Roorkee]</div>
+                </div>
+                <div class="grant-year">[Year]</div>
             </div>
-            <div class="grant-year">[Year]</div>
-        </div>
 
-    </div>
+        </div>
+    </main>
 
 </body>
 </html>
