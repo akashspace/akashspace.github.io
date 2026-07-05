@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Personal website of Akash Sharma, Postdoctoral Researcher in Applied Mathematics at Chalmers University of Technology and the University of Gothenburg.">
     <title>Akash Sharma | Mathematics Research</title>
+    
+    <!-- Font Awesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* Modern, clean font stack and layout styling */
         body {
@@ -64,6 +68,9 @@
         .intro-image {
             flex: 1;
             max-width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .intro-image img {
             width: 100%;
@@ -80,6 +87,24 @@
             font-size: 1.2rem;
             color: #666;
             margin-bottom: 20px;
+        }
+
+        /* --- Academic Profile Links Styling --- */
+        .profile-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .profile-links a {
+            color: #666;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .profile-links a:hover {
+            color: #0066cc;
+            transform: translateY(-3px); /* Subtle bounce effect on hover */
         }
     </style>
 </head>
@@ -105,23 +130,37 @@
                 Welcome to my personal website! 
             </p>
             <p>
-              I am a postdoctoral researcher at Chalmers University of Technology. Before that, I completed my Ph.D. at the University of Nottingham.
-
-            </p>
-            <p>
-               
+                I am a postdoctoral researcher at Chalmers University of Technology. Before that, I completed my Ph.D. at the University of Nottingham.
             </p>
         </div>
         
-        <!-- Optional Profile Picture Placeholder -->
         <div class="intro-image">
-            <img src="https://via.placeholder.com/200" alt="Picture">
+            <img src="https://via.placeholder.com/200" alt="Akash Sharma, Researcher in Mathematics">
+            
+            <!-- Academic Profile Links -->
+            <div class="profile-links">
+                <!-- Google Scholar -->
+                <a href="https://scholar.google.com/citations?user=x5xIqYgAAAAJ&hl=en" target="_blank" title="Google Scholar">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </a>
+                
+                <!-- LinkedIn -->
+                <a href="https://uk.linkedin.com/in/akashsharmaiitr" target="_blank" title="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                
+                <!-- Official Chalmers Page -->
+                <a href="https://www.chalmers.se/personer/akashs/" target="_blank" title="Chalmers Official Page">
+                    <i class="fa-solid fa-university"></i>
+                </a>
+                
+                <!-- ORCID -->
+                <a href="https://orcid.org/my-orcid?orcid=0009-0003-3102-4814" target="_blank" title="ORCID">
+                    <i class="fa-brands fa-orcid"></i>
+                </a>
+            </div>
         </div>
     </main>
 
 </body>
-    
 </html>
-
-
-
