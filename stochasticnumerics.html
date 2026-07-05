@@ -1,1 +1,174 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akash | Stochastic Numerics</title>
+    
+    <!-- MathJax for rendering LaTeX equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; color: #222; max-width: 1000px; margin: 0 auto; padding: 40px 20px; background-color: #f9f9f9; }
+        
+        /* Navigation */
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 40px; }
+        .logo { font-size: 1.4rem; font-weight: 700; text-decoration: none; color: #111; }
+        nav { display: flex; gap: 20px; }
+        nav a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s ease; }
+        nav a:hover, nav a.active { color: #0066cc; }
+        
+        /* Typography */
+        h1 { font-size: 2.5rem; margin-top: 0; margin-bottom: 10px; color: #111; }
+        .subtitle { font-size: 1.2rem; color: #666; margin-bottom: 50px; font-weight: 300; }
+        h2 { font-size: 1.8rem; color: #111; margin-top: 0; margin-bottom: 15px; }
+        
+        /* Layout Structure */
+        .feature-block {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 80px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        
+        /* Reverses the layout for the second item */
+        .feature-block.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .text-content {
+            flex: 1;
+        }
+
+        /* The box for Math or Images */
+        .math-visual {
+            flex: 1;
+            background: #f0f4f8;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .math-visual img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        /* Buttons */
+        .arxiv-btn {
+            display: inline-block;
+            padding: 6px 15px;
+            margin-top: 15px;
+            background-color: transparent;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .arxiv-btn:hover {
+            background-color: #0066cc;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media screen and (max-width: 768px) {
+            nav { flex-wrap: wrap; }
+            .feature-block, .feature-block.reverse {
+                flex-direction: column;
+                padding: 25px;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Akash</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="research.html">Research</a>
+            <a href="publications.html">Publications</a>
+            <a href="teaching.html">Teaching</a>
+            <a href="talks.html">Talks</a>
+            <a href="cv.html">CV</a>
+            <!-- Added the new page link here -->
+            <a href="stochasticnumerics.html" class="active">Numerics</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Stochastic Numerics</h1>
+        <p class="subtitle">Exploring the mathematical frameworks and numerical schemes behind complex stochastic dynamics.</p>
+
+        <!-- Topic 1: Reflected SDEs -->
+        <div class="feature-block">
+            <div class="text-content">
+                <h2>Reflected SDEs</h2>
+                <p>
+                    Here you can write an introduction to your work on Reflected Stochastic Differential Equations. Discuss the boundary value challenges and how the simplist random walk approaches help approximate Robin boundary conditions. 
+                </p>
+                <p>
+                    Because we added the MathJax script, you can write math easily. For example: \( dX_t = b(X_t)dt + \sigma(X_t)dW_t + dL_t \).
+                </p>
+                <a href="#" class="arxiv-btn">View Related Paper</a>
+            </div>
+            <div class="math-visual">
+                <p style="font-style: italic; color: #555; margin-bottom: 15px;">Numerical Scheme Example:</p>
+                <!-- Type your heavy LaTeX inside the double dollar signs -->
+                $$ X_{k+1} = X_k + b(X_k)\Delta t + \sigma(X_k)\Delta W_k $$
+                <p style="font-size: 0.85em; color: #666; margin-top: 15px;">You can also put an &lt;img&gt; tag here if you have a cool simulation plot!</p>
+            </div>
+        </div>
+
+        <!-- Topic 2: Confined Langevin (Reversed Layout) -->
+        <div class="feature-block reverse">
+            <div class="text-content">
+                <h2>Confined Langevin Dynamics</h2>
+                <p>
+                    Explain your numerical integrators for confined Langevin dynamics here. You can talk about the algorithms used to sample and optimize these processes without breaking the boundary limits.
+                </p>
+                <a href="#" class="arxiv-btn">View Related Paper</a>
+            </div>
+            <div class="math-visual">
+                <p style="font-style: italic; color: #555; margin-bottom: 15px;">Target Distribution:</p>
+                $$ \rho(x) \propto \exp(-U(x)) \mathbf{1}_{\Omega}(x) $$
+            </div>
+        </div>
+
+        <!-- Topic 3: Sticky Diffusions -->
+        <div class="feature-block">
+            <div class="text-content">
+                <h2>Sticky Diffusions</h2>
+                <p>
+                    Detail your research on the weak approximation of SDEs with sticky boundary conditions. Discuss how the continuous-time dynamics "stick" to the boundaries and the unique numerical challenges this creates.
+                </p>
+                <a href="#" class="arxiv-btn">View Related Paper</a>
+            </div>
+            <div class="math-visual">
+                <p style="font-style: italic; color: #555; margin-bottom: 15px;">Boundary Time:</p>
+                $$ \int_0^t \mathbf{1}_{\{X_s = 0\}} ds > 0 $$
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
