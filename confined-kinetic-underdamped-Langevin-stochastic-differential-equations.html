@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>Confined Kinetic Langevin Dynamics & SDEs | Akash</title>
+<meta name="description" content="Overview of numerical integrators and splitting schemes for confined kinetic Langevin dynamics and reflected SDEs. Joint work by A. Sharma, B. Leimkuhler, and M. Tretyakov.">
+<meta name="keywords" content="kinetic Langevin SDEs, confined Langevin dynamics, reflected SDEs, numerical integrators, stochastic differential equations">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confined Langevin Dynamics | Akash</title>
+    
+    <!-- MathJax for rendering LaTeX equations -->
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Styles matching your website */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; color: #222; max-width: 900px; margin: 0 auto; padding: 40px 20px; background-color: #f9f9f9; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 40px; }
+        .logo { font-size: 1.4rem; font-weight: 700; text-decoration: none; color: #111; }
+        nav { display: flex; gap: 20px; }
+        nav a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s ease; }
+        nav a:hover, nav a.active { color: #0066cc; }
+        h1 { font-size: 2.2rem; margin-top: 0; margin-bottom: 10px; color: #111; line-height: 1.2; }
+        h2 { font-size: 1.5rem; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; margin-top: 40px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        p { margin-bottom: 15px; text-align: justify; }
+        .subtitle { font-size: 1.1rem; color: #555; margin-bottom: 30px; font-weight: 500; }
+        
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eaeaea; }
+        th { font-weight: 600; color: #111; background-color: #f5f7fa; border-top: 2px solid #ddd; }
+        tr:last-child td { border-bottom: 2px solid #ddd; }
+        
+        /* Button Styling */
+        .arxiv-btn {
+            display: inline-block;
+            padding: 2px 10px;
+            margin-left: 8px;
+            background-color: transparent;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .arxiv-btn:hover {
+            background-color: #0066cc;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        /* Math Display Container */
+        .math-display {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Akash</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="research.html">Research</a>
+            <a href="publications.html">Publications</a>
+            <a href="teaching.html">Teaching</a>
+            <a href="talks.html">Talks</a>
+            <a href="cv.html">CV</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Numerical Integrators for Confined Langevin Dynamics</h1>
+        <div class="subtitle">
+            Joint work with B. Leimkuhler (University of Edinburgh) and M. Tretyakov (University of Nottingham)
+            <a href="https://doi.org/10.48550/arXiv.2404.16584" class="arxiv-btn" target="_blank">arXiv link</a>
+        </div>
+
+        <h2>Motivation and Background</h2>
+        <p>Many applied problems are naturally posed on a constrained domain $q\in\overline{G}\subset\mathbb{R}^d$[cite: 1]. Applications include sampling with truncated distributions or compactly supported priors, molecular dynamics where particles move in a container and collide with walls, optimization involving compact feasible sets, and solving PDEs through Feynman-Kac representations[cite: 1]. The overarching aim is to design numerical methods that respect these boundary mechanisms natively, rather than imposing ad hoc corrections[cite: 1].</p>
+        
+        <p>Historically, a substantial numerical literature has been developed for <strong>reflected overdamped Langevin dynamics</strong>[cite: 1]. In these systems, the dynamics are constrained through a boundary local time $L(t)$, resulting in a "push" in position at the boundary in the inward normal direction $\nu$[cite: 1]. The reflected gradient SDE takes the form[cite: 1]:</p>
+        
+        <div class="math-display">
+            $$dX(t) = -\nabla U(X(t))dt + \sqrt{\frac{2}{\beta}}dW(t) + \nu(X(t))I_{\partial G}(X(t))dL(t)$$
+        </div>
+
+        <p>Because of its utility, this overdamped reflected setting has a highly developed numerical literature[cite: 1]:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Work</th>
+                    <th>Numerical Idea</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Walk-on-sphere</strong></td>
+                    <td>Monte Carlo method for Neumann problem[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Projection methods</strong></td>
+                    <td>Euler methods where tentative points are projected back to $\overline{G}$[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Penalty / barrier methods</strong></td>
+                    <td>Approximate reflection by adding a large inward penalization or barrier force near $\partial G$[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Lépingle (1993, 1995)</strong></td>
+                    <td>Euler procedure for reflected SDEs; exact in the half-space setting[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Milstein (1996)</strong></td>
+                    <td>Change-of-coordinates scheme, Robin boundary value problems[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Gobet (2001)</strong></td>
+                    <td>Half-space Euler approximation for simulation of diffusions in a domain[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Bossy-Gobet-Talay (2004)</strong></td>
+                    <td>Symmetrized Euler scheme for efficient weak approximation of reflected diffusions[cite: 1].</td>
+                </tr>
+                <tr>
+                    <td><strong>Leimkuhler-S-Tretyakov (2023)</strong></td>
+                    <td>Random-walk and symmetrized procedures for reflected diffusions, Robin problems, and ergodic limits. Extended to second order[cite: 1].</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Confined Kinetic Langevin Dynamics</h2>
+        <p>In stark contrast, much less attention has been paid to the numerical integration of <strong>confined kinetic (underdamped) Langevin dynamics</strong>[cite: 1]. Kinetic Langevin dynamics incorporate both position and momentum[cite: 1]. When confined to a domain, the boundary mechanism acts as an elastic impulse at collision, causing a specular reflection where the normal component of momentum is reversed[cite: 1]. The corresponding equations are[cite: 1]:</p>
+
+        <div class="math-display">
+            $$dQ_t = P_tdt$$
+            $$dP_t = -\nabla U(Q_t)dt - \gamma P_tdt + \sqrt{\frac{2\gamma}{\beta}}dW_t + d\mathcal{R}_t$$
+        </div>
+        
+        <p>Here, $d\mathcal{R}_t$ represents the boundary jump in momentum[cite: 1]. In Euclidean spaces, underdamped dynamics often improve sampling efficiency, and we expect related advantages in confined domains[cite: 1].</p>
+
+        <h2>The Numerical Challenge: The $A_c$ Step and Multi-Collisions</h2>
+        <p>Integrating confined Langevin dynamics is fundamentally different from integrating overdamped SDEs[cite: 1]:</p>
+        <ul>
+            <li>The boundary mechanism acts on momentum, not position[cite: 1].</li>
+            <li>Collision times must be explicitly detected inside a numerical time step[cite: 1].</li>
+            <li>Multiple collisions can occur during a single time step[cite: 1].</li>
+        </ul>
+        <p>To address this, we construct numerical integrators using splitting schemes composed of three elementary pieces[cite: 1]:</p>
+        <ul>
+            <li><strong>$A_c$:</strong> The collisional drift step ($\dot{Q}=P$) with elastic reflections[cite: 1].</li>
+            <li><strong>$B$:</strong> The deterministic impulse step ($\dot{P}=-\nabla U(Q)$)[cite: 1].</li>
+            <li><strong>$O$:</strong> The stochastic momentum evolution ($dP=-\gamma P dt+\sqrt{2\gamma/\beta}dW$)[cite: 1].</li>
+        </ul>
+        <p>A major theoretical hurdle is handling multi-collisions during the $A_c$ step[cite: 1]. Obtaining a deterministic upper bound on the number of collisions within one step is highly complex[cite: 1]. We overcome this by utilizing a Lyapunov-type approach to estimate terms involving the "summation of incidence angles," which rigorously bypasses the need to explicitly bound the raw number of collisions[cite: 1].</p>
+
+        <p>Using these elementary blocks, an example of a symmetric splitting scheme is the <strong>$[OBA_cBO]$</strong> method[cite: 1]. One step of this scheme operates as follows[cite: 1]:</p>
+
+        <div class="math-display">
+            $$P_{1/2} = O(P_k; h/2)$$
+            $$\widehat{P}_{1/2} = P_{1/2} - \frac{h}{2}\nabla U(Q_k)$$
+            $$(Q_{k+1}, P^r_{1/2}) = A_c(Q_k, \widehat{P}_{1/2}; h)$$
+            $$\widehat{P}_{k+1} = P^r_{1/2} - \frac{h}{2}\nabla U(Q_{k+1})$$
+            $$P_{k+1} = O(\widehat{P}_{k+1}; h/2)$$
+        </div>
+
+        <h2>A Counterintuitive Observation: The Midpoint Collision</h2>
+        <p>When there is no stochasticity and no damping, the $[OBA_cBO]$ scheme reduces to the deterministic collisional Störmer-Verlet method ($[BA_cB]$)[cite: 1]. It is well known that this deterministic collisional Verlet method loses its theoretical order and generally degrades to first-order ($O(h)$) when collisions occur[cite: 1]. Standard stochastic numerics intuition would suggest that the stochastic method should similarly suffer an order reduction[cite: 1].</p>
+        
+        <p>However, numerical experiments reveal a highly counterintuitive result: symmetric stochastic splitting schemes like $[OBA_cBO]$ actually maintain <strong>second-order weak convergence ($O(h^2)$)</strong>[cite: 1]!</p>
+
+        <p>Why does the stochastic scheme recover second-order accuracy? The answer lies in the statistics of the collision times within the time steps[cite: 1]. In the deterministic $[BA_cB]$ scheme, the order-losing error terms are proportional to $(2\tau - h)$, where $\tau$ is the exact time of collision[cite: 1]. These terms perfectly vanish only if a collision happens exactly at the midpoint of the step ($\tau = h/2$)[cite: 1].</p>
+        
+        <p>In our stochastic setting, we observe a powerful stochastic averaging mechanism[cite: 1]. Analytically and numerically, the expected collision time naturally centers itself[cite: 1]:</p>
+        
+        <div class="math-display">
+            $$\mathbb{E}\tau = \frac{h}{2} + O(h^2)$$
+        </div>
+
+        <p>Because the collision time is centered in expectation, the first-order error terms average out, allowing the $[OBA_cBO]$ scheme to achieve true second-order weak accuracy[cite: 1].</p>
+
+        <h2>Randomization in Deterministic Hamiltonian Dynamics</h2>
+        <p>This insight leads to a fascinating corollary regarding deterministic Hamiltonian dynamics with elastic collisions ($\dot{q}=p$, $\dot{p}=-\nabla U(q)$)[cite: 1]. While the standard $[BA_cB]$ method is only first order when collisions occur, what if we randomize the initial condition $(q_0, p_0)$ from a distribution[cite: 1]?</p>
+
+        <p>By randomizing the initial condition, the collision time is no longer rigidly fixed from step to step[cite: 1]. The very same averaging mechanism takes effect, causing collisions to occur near the midpoint in expectation[cite: 1]. Consequently, specular reflection creates nontrivial collision effects, but stochastic averaging allows second-order weak accuracy to emerge even here[cite: 1].</p>
+
+    </main>
+</body>
+</html>
