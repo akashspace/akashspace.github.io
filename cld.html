@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confined Langevin Dynamics</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background-color: #fdfdfd;
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 8px;
+            margin-top: 35px;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .paper-link {
+            display: inline-block;
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .paper-link:hover {
+            background-color: #1c5980;
+        }
+        .math {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        .math-block {
+            text-align: center;
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #eaeaea;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Numerical Integrators for Confined Langevin Dynamics</h1>
+        <div class="subtitle">Based on joint work with B. Leimkuhler and M. Tretyakov</div>
+        <a href="https://arxiv.org/abs/2404.16584" class="paper-link" target="_blank">View Paper on arXiv (2404.16584)</a>
+    </header>
+
+    <section>
+        <h2>Motivation and Background</h2>
+        <p>Many applied problems are naturally posed on a constrained domain <span class="math">q &in; G &sub; &reals;<sup>d</sup></span>[cite: 1]. Applications include sampling with truncated distributions or compactly supported priors, molecular dynamics where particles move in a container and collide with walls, optimization involving compact feasible sets, and solving PDEs through Feynman-Kac representations[cite: 1]. The overarching aim is to design numerical methods that respect these boundary mechanisms natively, rather than imposing ad hoc corrections[cite: 1].</p>
+        
+        <p>Historically, a substantial numerical literature has been developed for <strong>reflected overdamped SDEs</strong>[cite: 1]. In these systems, the dynamics are constrained through a boundary local time, resulting in a "push" in position at the boundary[cite: 1]. Significant work by Lépingle, Milstein, Gobet, and others has explored walk-on-sphere methods, projection techniques, and penalty/barrier approximations[cite: 1].</p>
+        
+        <p>In stark contrast, much less attention has been paid to the numerical integration of <strong>confined kinetic (underdamped) Langevin dynamics</strong>[cite: 1]. Kinetic Langevin dynamics incorporate both position and momentum[cite: 1]. When confined to a domain, the boundary mechanism acts as an elastic impulse at collision, causing a specular reflection where the normal component of momentum is reversed[cite: 1]. In Euclidean spaces, underdamped dynamics often improve sampling efficiency, and we expect related advantages in confined domains[cite: 1].</p>
+    </section>
+
+    <section>
+        <h2>The Numerical Challenge: The A<sub>c</sub> Step and Multi-Collisions</h2>
+        <p>Integrating confined Langevin dynamics is fundamentally different from integrating overdamped SDEs[cite: 1]:</p>
+        <ul>
+            <li>The boundary mechanism acts on momentum, not position[cite: 1].</li>
+            <li>Collision times must be explicitly detected inside a numerical time step[cite: 1].</li>
+            <li>Multiple collisions can occur during a single time step[cite: 1].</li>
+        </ul>
+        <p>To address this, we construct numerical integrators using splitting schemes composed of three elementary pieces[cite: 1]:</p>
+        <ul>
+            <li><strong>A<sub>c</sub></strong>: The collisional drift step, which solves exact free transport with elastic reflections[cite: 1].</li>
+            <li><strong>B</strong>: The deterministic impulse step[cite: 1].</li>
+            <li><strong>O</strong>: The stochastic momentum evolution (Ornstein-Uhlenbeck)[cite: 1].</li>
+        </ul>
+        <p>The A<sub>c</sub> step can be implemented recursively if a path hits the boundary multiple times within a step of length <span class="math">h</span>[cite: 1]. A major theoretical hurdle is that obtaining a deterministic upper bound on the number of collisions within one step is highly complex[cite: 1]. We overcome this by utilizing a Lyapunov-type approach to bound the sum of incidence angles, bypassing the need to explicitly bound the number of collisions[cite: 1].</p>
+    </section>
+
+    <section>
+        <h2>Splitting Schemes and One-Step Error</h2>
+        <p>Using these elementary blocks, we define first-order Euler-type schemes such as [PAC] and [AcP][cite: 1]. Under suitable assumptions, these schemes achieve weak order one convergence[cite: 1]. By bounding the boundary part of the local error using our collision estimate, the multi-collision issue is rigorously handled[cite: 1].</p>
+    </section>
+
+    <section>
+        <h2>A Counterintuitive Observation: Recovering Second-Order Convergence</h2>
+        <p>The story takes a highly interesting turn when we consider symmetric splitting schemes, such as the <strong>[OBA<sub>c</sub>BO]</strong> method[cite: 1]. When stochasticity and damping are removed, this scheme reduces to the deterministic collisional Störmer-Verlet method[cite: 1].</p>
+        <p>It is a known issue that the deterministic collisional Verlet method loses its theoretical order and generally degrades to first-order (<span class="math">O(h)</span>) when collisions occur[cite: 1]. Based on standard stochastic numerics intuition, one might expect the stochastic collisional method to suffer the same fate[cite: 1].</p>
+        <p>However, numerical experiments reveal a counterintuitive result: symmetric stochastic splitting schemes like [OBA<sub>c</sub>BO] actually maintain <strong>second-order weak convergence (<span class="math">O(h^2)</span>)</strong>[cite: 1]!</p>
+    </section>
+
+    <section>
+        <h2>The Midpoint Collision Mechanism</h2>
+        <p>Why does the stochastic scheme recover second-order accuracy? The answer lies in the statistics of the collision times within the time steps[cite: 1].</p>
+        <p>In the deterministic collisional Verlet scheme, the order-losing error terms are proportional to <span class="math">(2&tau; - h)</span>, where <span class="math">&tau;</span> is the exact time of collision[cite: 1]. If a collision were to happen exactly at the midpoint of the step (<span class="math">&tau; = h/2</span>), these error terms would perfectly vanish[cite: 1].</p>
+        <p>In our stochastic setting, we discovered a stochastic averaging mechanism. Analytically and numerically, we observe that the expected collision time naturally centers itself[cite: 1]:</p>
+        <div class="math-block">
+            E[&tau;] = h/2 + O(h<sup>2</sup>)
+        </div>
+        <p>Because the collision time is centered in expectation, the first-order error terms average out, allowing the [OBA<sub>c</sub>BO] scheme to achieve true second-order weak accuracy[cite: 1]. Interestingly, this same averaging effect can also make collisions occur near the midpoint in expectation for deterministic Hamiltonian dynamics, provided the initial conditions are suitably randomized[cite: 1].</p>
+    </section>
+
+    <section>
+        <h2>Conclusion</h2>
+        <p>While specular reflection introduces nontrivial collision effects—especially regarding multi-collisions—stochastic averaging acts as a powerful corrective force[cite: 1]. It enables properly designed symmetric splitting schemes to bypass expected theoretical bottlenecks and deliver highly efficient, second-order weak accuracy for confined Langevin dynamics[cite: 1].</p>
+    </section>
+
+    <footer>
+        <p><small>&copy; 2026 A. Sharma. SciCADE 2026, Edinburgh.</small></p>
+    </footer>
+
+</body>
+</html>
