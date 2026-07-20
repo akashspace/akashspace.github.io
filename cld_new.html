@@ -504,25 +504,31 @@ U(q_1,q_2)
             $$
         </div>
 
-        <p>Consequently, terms proportional to $\tau-h/2$ cancel after averaging to the accuracy required for a local weak error of order $O(h^3)$, which produces a global weak error of order $O(h^2)$. In the half-space analysis for $[OBA_cBO]$, this cancellation is made precise under smoothness and density assumptions. Numerical experiments show the same second-order behaviour for several symmetric compositions and for curved domains.</p>
+        <p>Consequently, terms proportional to $\tau-h/2$ cancel after averaging to the accuracy required for a 
+            local weak error of order $O(h^3)$, which produces a global weak error of order $O(h^2)$. In the half-space 
+            analysis for $[OBA_cBO]$, this cancellation is made precise under smoothness and density assumptions. 
+            Numerical experiments show the same second-order behaviour for several symmetric compositions and for curved domains.</p>
 
        
 
-        <p>The same observation suggests a related deterministic experiment: if the initial condition of a collisional Hamiltonian system is randomized, then the collision time also varies across the ensemble. Numerically, the ensemble-averaged energy error of collisional Störmer–Verlet recovers second-order behaviour. This points to a broader role for randomization in geometric integration with impacts.</p>
+        <p>The same observation suggests a related deterministic experiment: if the initial condition of a 
+            collisional Hamiltonian system is randomized, then the collision time also varies across the ensemble. 
+            Numerically, the ensemble-averaged energy error of collisional Störmer–Verlet recovers second-order behaviour. 
+            This points to a broader role for randomization in geometric integration with impacts.</p>
 
-        <h2><span class="section-kicker">Contributions</span>What this paper adds</h2>
+        <h2><span class="section-kicker">Contributions</span>What this work adds</h2>
         <div class="contribution-box">
             <ul>
                 <li>First-order weak integrators for general confined Langevin SDEs, with error analysis at finite time and for ergodic limits.</li>
                 <li>A recursive $A_c$ construction that treats elastic multi-collisions as part of the numerical flow.</li>
                 <li>A Lyapunov-based estimate for the accumulated boundary-incidence contribution, avoiding an explicit deterministic bound on the number of collisions.</li>
-                <li>Symmetric splitting schemes for confined Langevin sampling, including a method requiring one new force evaluation per step after reuse.</li>
+                <li>Symmetric splitting schemes for confined Langevin sampling, requiring one new force evaluation per step after reuse.</li>
                 <li>An explanation of the counterintuitive second-order weak behaviour through midpoint centering of collision times.</li>
                 <li>Numerical comparisons on model problems and constrained sampling examples, supporting the theory and illustrating the performance of different splittings.</li>
             </ul>
         </div>
 
-        <p>The broader conclusion is that specular reflection need not be treated as an order-destroying correction appended to a standard Langevin method. When the collision flow is incorporated geometrically and the splitting is chosen carefully, one can retain both the physical boundary mechanism and high weak accuracy.</p>
+        <p>The broader conclusion is that specular reflection need not be treated as an order-destroying correction added to a standard Langevin method. When the collision flow is incorporated geometrically and the splitting is designed carefully, one can retain both the physical boundary mechanism and second order weak accuracy.</p>
     </main>
 </body>
 </html>
