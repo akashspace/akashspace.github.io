@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerical Integrators for Confined Langevin Dynamics | Akash</title>
+    <meta name="description" content="An accessible overview of numerical integrators for confined kinetic Langevin dynamics with elastic reflection, including multi-collisions and the mechanism behind second-order weak convergence.">
+    <meta name="keywords" content="confined Langevin dynamics, kinetic Langevin SDEs, specular reflection, numerical integrators, splitting schemes, weak convergence">
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Styles matching your website */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; color: #222; max-width: 900px; margin: 0 auto; padding: 40px 20px; background-color: #f9f9f9; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 40px; }
+        .logo { font-size: 1.4rem; font-weight: 700; text-decoration: none; color: #111; }
+        nav { display: flex; gap: 20px; }
+        nav a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s ease; }
+        nav a:hover, nav a.active { color: #0066cc; }
+        h1 { font-size: 2.2rem; margin-top: 0; margin-bottom: 10px; color: #111; line-height: 1.2; }
+        h2 { font-size: 1.5rem; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; margin-top: 44px; }
+        h3 { font-size: 1.12rem; color: #222; margin: 30px 0 8px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        p { margin-bottom: 15px; text-align: justify; }
+        .subtitle { font-size: 1.1rem; color: #555; margin-bottom: 30px; font-weight: 500; }
+
+        /* Article-only additions. The website header above is unchanged. */
+        main { --accent: #007f73; --accent-soft: #dbece9; --ink-soft: #555; }
+        main a { color: #0066cc; }
+        main a:hover { text-decoration-thickness: 2px; }
+        .lead { font-size: 1.08rem; color: #333; }
+        .section-kicker { display: block; margin-bottom: 4px; color: var(--accent); font-size: 0.78rem; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; }
+        .note, .contribution-box {
+            margin: 24px 0;
+            padding: 17px 19px;
+            border-left: 4px solid var(--accent);
+            background: #eef5f3;
+        }
+        .note p, .contribution-box p { margin: 0; text-align: left; }
+        .contribution-box ul { margin: 10px 0 0; }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 22px 0;
+        }
+        .comparison-card {
+            padding: 16px 18px;
+            border: 1px solid #dde3e2;
+            border-radius: 7px;
+            background: rgba(255,255,255,0.42);
+        }
+        .comparison-card h3 { margin-top: 0; }
+        .comparison-card p { text-align: left; margin-bottom: 0; }
+        .scheme-list { list-style: none; padding-left: 0; }
+        .scheme-list li { padding-left: 1.45rem; position: relative; }
+        .scheme-list li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+        .small-note { color: var(--ink-soft); font-size: 0.92rem; text-align: left; }
+        .result-line { font-weight: 650; color: #124c45; }
+
+        /* Table Styling */
+        .table-wrap { overflow-x: auto; margin: 25px 0; }
+        table { width: 100%; border-collapse: collapse; background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        th, td { padding: 12px 15px; text-align: left; vertical-align: top; border-bottom: 1px solid #eaeaea; }
+        th { font-weight: 600; color: #111; background-color: #f5f7fa; border-top: 2px solid #ddd; }
+        tr:last-child td { border-bottom: 2px solid #ddd; }
+        td:first-child { width: 34%; white-space: nowrap; }
+        td:first-child a { font-weight: 650; text-decoration: none; }
+        td:first-child a:hover { text-decoration: underline; }
+
+        /* Button Styling */
+        .arxiv-btn {
+            display: inline-block;
+            padding: 2px 10px;
+            margin-left: 8px;
+            background-color: transparent;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .arxiv-btn:hover { background-color: #0066cc; color: #ffffff; text-decoration: none; }
+
+        /* Equations deliberately have no white card/background. */
+        .math-display {
+            background: transparent;
+            padding: 10px 14px 10px 18px;
+            border: 0;
+            border-left: 3px solid var(--accent-soft);
+            border-radius: 0;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        .math-display.compact { font-size: 0.96rem; }
+
+        @media (max-width: 720px) {
+            body { padding: 26px 16px; }
+            header { align-items: flex-start; gap: 18px; }
+            nav { flex-wrap: wrap; gap: 8px 14px; justify-content: flex-end; }
+            h1 { font-size: 1.9rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            td:first-child { white-space: normal; min-width: 180px; }
+            .math-display { padding-left: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Akash</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="research.html">Research</a>
+            <a href="publications.html">Publications</a>
+            <a href="teaching.html">Teaching</a>
+            <a href="talks.html">Talks</a>
+            <a href="cv.html">CV</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Numerical Integrators for Confined Langevin Dynamics</h1>
+        <div class="subtitle">
+            Joint work with B. Leimkuhler (University of Edinburgh) and M. V. Tretyakov (University of Nottingham)
+            <a href="https://doi.org/10.48550/arXiv.2404.16584" class="arxiv-btn" target="_blank" rel="noopener noreferrer">arXiv paper</a>
+        </div>
+
+        <p class="lead">Langevin dynamics is a standard tool for sampling, molecular simulation, and designing optimization methods. The situation becomes subtler when the position is restricted to a domain. The numerical method must not only approximate an SDE, but must also take into account the interaction with the boundary. In the kinetic setting this interaction is an elastic collision, and that changes both the algorithm and its convergence analysis.</p>
+
+        <div class="contribution-box">
+            <p><strong>Overview.</strong> The goal is not simply to keep particles inside the domain which can
+already be achieved in several ways. The challenge is to do so while faithfully capturing the underlying
+collision dynamics. We therefore ask whether it is possible to design numerical schemes in which specular
+reflections are an intrinsic part of the time-stepping procedure, rather than being enforced through
+projection, penalty methods, rejection, or Metropolis adjustments. Doing so requires handling
+multi-collision events, where several boundary reflections may occur within a single numerical step. 
+Despite this, the resulting symmetric splitting schemes display an unexpected second-order weak convergence.</p>
+        </div>
+
+        <h2><span class="section-kicker">Background</span>From reflected overdamped dynamics to kinetic Langevin with specular reflection</h2>
+        <p>For reflected overdamped Langevin dynamics, the state is the position alone. A boundary local time keeps the process in $\bar G$ by pushing it in the inward normal direction $\nu$:</p>
+
+        <div class="math-display">
+            $$
+            dX_t=-\nabla U(X_t)\,dt+\sqrt{\frac{2}{\beta}}\,dW_t
+            +\nu(X_t)I_{\partial G}(X_t)\,dL_t.
+            $$
+        </div>
+
+        <p>
+    Reflected overdamped Langevin dynamics and, in general, reflected diffusions have a long numerical history.
+    The following list is not exhaustive, but it gives a useful picture of the kinds of boundary
+    treatments that have been developed.
+</p>
+        <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Work / method</th>
+                <th>Main numerical idea</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Walk-on-sphere</strong></td>
+                <td>Monte Carlo method for the Neumann problem, based on simulating exits from balls inside the domain.</td>
+            </tr>
+            <tr>
+                <td><strong>Walk-on-hypercube</strong></td>
+                <td>Milstein-type random walk construction using local coordinate boxes / hypercubes near the boundary.</td>
+            </tr>
+            <tr>
+                <td><strong>Projection methods</strong></td>
+                <td>Euler-type methods where a tentative point outside the domain is projected back to \(\overline{G}\).</td>
+            </tr>
+            <tr>
+                <td><strong>Penalty / barrier methods</strong></td>
+                <td>Approximate reflection by adding a strong inward penalization or barrier force near \(\partial G\).</td>
+            </tr>
+            <tr>
+                <td><strong>Milstein: change of coordinates</strong></td>
+                <td>Boundary-adapted coordinates are used to construct numerical schemes for boundary-value problems.</td>
+            </tr>
+            <tr>
+                <td><strong>Lépingle procedure</strong></td>
+                <td>Euler procedure for reflected SDEs, with an exact construction in the half-space setting.</td>
+            </tr>
+            <tr>
+                <td><strong>Gobet half-space Euler</strong></td>
+                <td>Local half-space approximation for simulating diffusions in a domain and analyzing weak errors near the boundary.</td>
+            </tr>
+            <tr>
+                <td><strong>Symmetrized reflection</strong></td>
+                <td>Symmetrized Euler methods for efficient weak approximation of reflected diffusions.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        <p class="small-note">This list is intentionally selective rather than exhaustive. The important contrast is that reflected overdamped dynamics has a mature numerical theory, whereas confined kinetic Langevin dynamics has received much less attention.</p>
+
+        <p>In the kinetic or underdamped model, both position $Q_t$ and momentum $P_t$ evolve. 
+                              The boundary does not push the position through local time.
+                       Instead, it produces an instantaneous impulse in momentum:</p>
+
+        <div class="math-display">
+            $$
+            \begin{aligned}
+            dQ_t &= P_t\,dt,\\
+            dP_t &= -\nabla U(Q_t)\,dt-\gamma P_t\,dt
+            +\sqrt{\frac{2\gamma}{\beta}}\,dW_t+d\mathcal R_t.
+            \end{aligned}
+            $$
+        </div>
+       <p>
+    The reflection term is a jump process in momentum. If the particle hits the boundary at time \(s\),
+    then only the normal component of the incoming momentum is reversed:
+</p>
+
+<div class="math-display">
+    $$
+    \mathcal R_t
+    =
+    -\sum_{0<s\le t}
+    2\big(P_s^- \cdot n_G(Q_s)\big)n_G(Q_s)\,
+    I_{\partial G}(Q_s),
+    $$
+</div>
+
+<p>
+    Here \(P_s^-\) denotes the momentum just before the collision and \(n_G(Q_s)\) is the outward unit normal 
+                   at the boundary point \(Q_s\). In other words, the particle undergoes 
+        specular, or elastic, reflection at \(\partial G\): the tangential component of momentum is unchanged, 
+    while the normal component changes sign.
+</p>
+       
+        <p>The invariant density is</p>
+
+        <div class="math-display">
+            $$
+            \rho(q,p)=\frac{1}{Z}\exp\!\left[-\beta\left(U(q)+\frac{|p|^2}{2}\right)\right],
+            \qquad (q,p)\in\bar G\times\mathbb R^d.
+            $$
+        </div>
+
+        <h2><span class="section-kicker">Construction</span>Splitting the dynamics into solvable pieces</h2>
+        <p>We separate the dynamics into three elementary flows.
+            The notation emphasizes that the free-transport part already includes collisions:</p>
+
+        <ul class="scheme-list">
+            <li><strong>$A_c$ — collisional drift:</strong> $\dot Q=P$, with exact straight-line transport and elastic reflection whenever the path reaches $\partial G$.</li>
+            <li><strong>$B$ — deterministic impulse:</strong> $\dot P=-\nabla U(Q)$.</li>
+            <li><strong>$O$ — Ornstein–Uhlenbeck step:</strong> $dP=-\gamma P\,dt+\sqrt{2\gamma/\beta}\,dW_t$, which can be sampled exactly.</li>
+        </ul>
+
+        <p>For example, the symmetric $[OBA_cBO]$ composition is</p>
+
+        <div class="math-display compact">
+            $$
+            \begin{aligned}
+            P_{k+1/2} &= O(P_k;h/2),\\
+            \widehat P_{k+1/2} &= P_{k+1/2}-\frac h2\nabla U(Q_k),\\
+            (Q_{k+1},P^{\mathrm r}_{k+1/2}) &= A_c(Q_k,\widehat P_{k+1/2};h),\\
+            \widehat P_{k+1} &= P^{\mathrm r}_{k+1/2}-\frac h2\nabla U(Q_{k+1}),\\
+            P_{k+1} &= O(\widehat P_{k+1};h/2).
+            \end{aligned}
+            $$
+        </div>
+
+        <p>The endpoint force can be reused at the next step, so after initialization the method requires one new gradient evaluation per time step. We also study other symmetric arrangements, including $[BA_cOA_cB]$ and $[OA_cBA_cO]$, and compare their numerical performance.</p>
+
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h3>First-order schemes</h3>
+                <p>Momentum-first $[PA_c]$ and collision-first $[A_cP]$ Euler-type methods incorporate specular reflection directly and attain weak order one under suitable assumptions, both over finite intervals and for ergodic averages.</p>
+            </div>
+            <div class="comparison-card">
+                <h3>Symmetric splittings</h3>
+                <p>Compositions of $A_c$, $B$, and $O$ display second-order weak convergence. The result is surprising because setting noise and damping to zero reduces $[OBA_cBO]$ to collisional Störmer–Verlet, which is normally only first order at collisions.</p>
+            </div>
+        </div>
+
+        <h2><span class="section-kicker">Boundary geometry</span>The $A_c$ step and the multi-collision problem</h2>
+        <p>If no collision occurs during a duration $h$, the $A_c$ flow is simply $A_c(q,p;h)=(q+hp,p)$. If the line first reaches the boundary at time $\tau$, then</p>
+
+        <div class="math-display">
+            $$
+            Q_c=q+\tau p,\qquad
+            p^{\mathrm r}=p-2\bigl(p\cdot n_G(Q_c)\bigr)n_G(Q_c),\qquad
+            Q_1=Q_c+(h-\tau)p^{\mathrm r}.
+            $$
+        </div>
+
+        <p>On a curved boundary, this reflected segment may hit the wall again before the step ends. Multi-collisions are especially associated with large speeds or nearly grazing incidence, when $p\cdot n_G(Q_c)$ is small. The correct $A_c$ implementation is therefore recursive: detect a collision, reflect, reduce the remaining time, and continue until the full interval $h$ has been exhausted.</p>
+
+        <p>Let $\kappa=\kappa(q,p,h)$ be the number of collisions in the step, $Q_{c,i}$ the collision points, $\widetilde P_i$ the post-collision momenta, and $\vartheta_\kappa=\tau_1+\cdots+\tau_\kappa$. Then</p>
+
+        <div class="math-display compact">
+            $$
+            \begin{aligned}
+            \widetilde P_0&=p,\\
+            \widetilde P_i&=\widetilde P_{i-1}
+            -2\bigl(n_G(Q_{c,i})\cdot\widetilde P_{i-1}\bigr)n_G(Q_{c,i}),
+            \qquad i=1,\ldots,\kappa,\\
+            Q_1&=q+\tau_1\widetilde P_0+\tau_2\widetilde P_1+\cdots
+            +\tau_\kappa\widetilde P_{\kappa-1}
+            +(h-\vartheta_\kappa)\widetilde P_\kappa.
+            \end{aligned}
+            $$
+        </div>
+
+        <h3>Why simply counting collisions is the wrong quantity</h3>
+        <p>A deterministic upper bound on $\kappa$ is difficult and, for the convergence proof, unnecessarily strong. The boundary part of the one-step error naturally contains a weighted sum of incoming normal velocities, schematically</p>
+
+        <div class="math-display">
+            $$
+            h\sum_{i=1}^{\kappa}
+            \bigl(n_G(Q_{c,i})\cdot\widetilde P_{i-1}\bigr)
+            \bigl(1+|P|^{2m}\bigr).
+            $$
+        </div>
+
+        <p>Our analysis controls this accumulated incidence contribution through a Lyapunov-type argument rather than controlling the raw number of impacts. In finite time, the corresponding expectation remains bounded independently of the step size. Informally, the expected number of <em>time steps containing collisions</em> does not grow as $h\to0$. This is a key reason why the collision contribution can be summed without destroying first-order weak convergence.</p>
+
+        <div class="note">
+            <p><strong>Practical interpretation.</strong> A multi-collision step is handled by repeated exact billiard reflections. The theory then measures how strongly the trajectory meets the boundary, not merely how many times the recursive loop runs.</p>
+        </div>
+
+        <h2><span class="section-kicker">Main phenomenon</span>Why second order is unexpected</h2>
+        <p>To isolate the issue, consider one-dimensional deterministic Hamiltonian dynamics on $G=(0,\infty)$, with Hamiltonian $H(q,p)=\tfrac12p^2+U(q)$ and one collision at time $\tau\in(0,h)$. The exact collisional flow has the expansion</p>
+
+        <div class="math-display compact">
+            $$
+            \begin{aligned}
+            Q(h)&=q+(2\tau-h)p-\frac12(h-2\tau)^2U'(q)+O(h^3),\\
+            P(h)&=-p+(2\tau-h)U'(q)
+            +\frac12(h-2\tau)^2U''(q)p+O(h^3).
+            \end{aligned}
+            $$
+        </div>
+
+        <p>The collisional Störmer–Verlet update $[BA_cB]$ instead gives</p>
+
+        <div class="math-display compact">
+            $$
+            \begin{aligned}
+            Q_1&=q+(2\tau-h)p-(2\tau-h)\frac h2U'(q),\\
+            P_1&=-p-\frac h2(2\tau-h)U''(q)p+O(h^3).
+            \end{aligned}
+            $$
+        </div>
+
+        <p>The leading discrepancy is proportional to $2\tau-h$. A generic deterministic collision is not centered in the time step, so the collisional method loses an order. The same mechanism is visible directly in the numerical energy:</p>
+
+        <div class="math-display compact">
+            $$
+            \begin{aligned}
+            H(Q_1,P_1)-H(q,p)
+            &= (2\tau-h)pU'(q)\\
+            &\quad+\frac{h(2\tau-h)}{2}
+            \left(U''(q)p^2-\bigl(U'(q)\bigr)^2\right)\\
+            &\quad+\frac{(2\tau-h)^2}{2}U''(q)p^2+O(h^3).
+            \end{aligned}
+            $$
+        </div>
+
+        <p class="result-line">At the midpoint, $\tau=h/2$, every displayed order-losing term vanishes.</p>
+
+        <h2><span class="section-kicker">Stochastic averaging</span>The collision time is centered in expectation</h2>
+        <p>The stochastic splitting does not force every collision to occur at the midpoint. Instead, noise randomizes the pre-collision state and hence the location of the collision within the $A_c$ substep. The relevant cancellation is statistical:</p>
+
+        <div class="math-display">
+            $$
+            \mathbb E\tau=\frac h2+O(h^2).
+            $$
+        </div>
+
+        <p>Consequently, terms proportional to $\tau-h/2$ cancel after averaging to the accuracy required for a local weak error of order $O(h^3)$, which produces a global weak error of order $O(h^2)$. In the half-space analysis for $[OBA_cBO]$, this cancellation is made precise under smoothness and density assumptions. Numerical experiments show the same second-order behaviour for several symmetric compositions and for curved domains.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Without collision</th>
+                        <th>With collision</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Störmer–Verlet / $[BA_cB]$</strong></td>
+                        <td>$O(h^2)$</td>
+                        <td>$O(h)$ for fixed deterministic initial data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>$[OBA_cBO]$</strong></td>
+                        <td>$O(h^2)$ weakly</td>
+                        <td>$O(h^2)$ weakly</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>The same observation suggests a related deterministic experiment: if the initial condition of a collisional Hamiltonian system is randomized, then the collision time also varies across the ensemble. Numerically, the ensemble-averaged energy error of collisional Störmer–Verlet recovers second-order behaviour. This points to a broader role for randomization in geometric integration with impacts.</p>
+
+        <h2><span class="section-kicker">Contributions</span>What this paper adds</h2>
+        <div class="contribution-box">
+            <ul>
+                <li>First-order weak integrators for general confined Langevin SDEs, with error analysis at finite time and for ergodic limits.</li>
+                <li>A recursive $A_c$ construction that treats elastic multi-collisions as part of the numerical flow.</li>
+                <li>A Lyapunov-based estimate for the accumulated boundary-incidence contribution, avoiding an explicit deterministic bound on the number of collisions.</li>
+                <li>Symmetric splitting schemes for confined Langevin sampling, including a method requiring one new force evaluation per step after reuse.</li>
+                <li>An explanation of the counterintuitive second-order weak behaviour through midpoint centering of collision times.</li>
+                <li>Numerical comparisons on model problems and constrained sampling examples, supporting the theory and illustrating the performance of different splittings.</li>
+            </ul>
+        </div>
+
+        <p>The broader conclusion is that specular reflection need not be treated as an order-destroying correction appended to a standard Langevin method. When the collision flow is incorporated geometrically and the splitting is chosen carefully, one can retain both the physical boundary mechanism and high weak accuracy.</p>
+    </main>
+</body>
+</html>
